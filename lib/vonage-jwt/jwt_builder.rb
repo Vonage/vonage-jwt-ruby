@@ -41,7 +41,7 @@ module Vonage
     #
     # @return [String]
     #
-    attr_accessor :application_id, :private_key, :jti, :nbf, :ttl, :exp, :alg, :paths, :subject, :jwt
+    attr_accessor :application_id, :private_key, :jti, :nbf, :ttl, :exp, :alg, :paths, :subject, :additional_claims, :jwt
 
     def initialize(params = {})
       Vonage::JWTBuilder.validate_parameters_not_conflicting(params)
@@ -55,6 +55,7 @@ module Vonage
       @alg = params.fetch(:alg, 'RS256')
       @paths = params.fetch(:paths, nil)
       @subject = params.fetch(:subject, 'Subject')
+      @additional_claims = set_additional_claims(params)
       @jwt = Vonage::JWT.new(generator: self)
 
       after_initialize!(self)
@@ -87,6 +88,10 @@ module Vonage
       else
         OpenSSL::PKey::RSA.new(private_key)
       end
+    end
+
+    def set_additional_claims(params)
+      params.delete_if {|k,v| [:application_id, :private_key, :jti, :nbf, :ttl, :exp, :alg, :paths, :subject].include?(k) }
     end
 
     def set_exp

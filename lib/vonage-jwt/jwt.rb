@@ -27,6 +27,7 @@ module Vonage
       }
       hash.merge!(generator.paths) if generator.paths
       hash.merge!(nbf: generator.nbf) if generator.nbf
+      hash.merge!(generator.additional_claims) if !generator.additional_claims.empty?
       hash
     end
   end
