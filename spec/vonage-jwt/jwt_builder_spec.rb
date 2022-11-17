@@ -216,4 +216,27 @@ describe Vonage::JWTBuilder do
       }.to raise_error(ArgumentError, "Expected either 'ttl' or 'exp' parameter, preference is to set 'ttl' parameter")
     end
   end
+
+  context 'with additional private claims' do
+    before :each do
+      @builder = Vonage::JWTBuilder.new(
+        application_id: '123456789',
+        private_key: './spec/vonage-jwt/private_key.txt',
+        subject: 'ExampleApp',
+        foo: 'bar',
+        baz: 'qux'
+      )
+      token = @builder.jwt.generate
+      @decoded_token = JWT.decode(token, nil, nil, { algorithm: 'RS256' })
+    end
+
+    it 'instantiates an instance of Vonage::JWTBuilder' do
+      expect(@builder).to be_an_instance_of(Vonage::JWTBuilder)
+    end
+
+    it 'generates a JWT string with the data provided' do
+      expect(@decoded_token.first['foo']).to eql('bar')
+      expect(@decoded_token.first['baz']).to eql('qux')
+    end
+  end
 end
