@@ -5,7 +5,7 @@ describe Vonage::JWTBuilder do
     before :each do
       @builder = Vonage::JWTBuilder.new(application_id: '123456789', private_key: './spec/vonage-jwt/private_key.txt')
       token = @builder.jwt.generate
-      @decoded_token = JWT.decode(token, nil, nil, { algorithm: 'RS256' }).first
+      @decoded_token = JWT.decode(token, nil, nil, { algorithm: 'RS256' })
     end
 
     it 'instantiates an instance of Vonage::JWTBuilder' do
@@ -25,11 +25,22 @@ describe Vonage::JWTBuilder do
     end
 
     it 'generates a JWT string with the data provided' do
-      expect(@decoded_token['application_id']).to eql('123456789')
+      expect(@decoded_token.first['application_id']).to eql('123456789')
     end
 
     it 'does not include optional configuration options not set' do
-      expect(@decoded_token).to_not have_key(:nbf)
+      expect(@decoded_token.first).to_not have_key(:nbf)
+    end
+
+    it 'generates a JWT header with proper formation' do
+      expect(@decoded_token.last).to match(
+        hash_including(
+          {
+            "alg"=>"RS256",
+            "typ"=>"JWT"
+          }
+        )
+      )
     end
   end
 
@@ -53,7 +64,7 @@ describe Vonage::JWTBuilder do
         }
       )
       token = @builder.jwt.generate
-      @decoded_token = JWT.decode(token, nil, nil, { algorithm: 'RS256' }).first
+      @decoded_token = JWT.decode(token, nil, nil, { algorithm: 'RS256' })
     end
 
     it 'instantiates an instance of Vonage::JWTBuilder' do
@@ -81,13 +92,13 @@ describe Vonage::JWTBuilder do
     end
 
     it 'generates a JWT string with the data provided' do
-      expect(@decoded_token['paths']).to be_nil
-      expect(@decoded_token['acl']).to eql("paths"=>{"/messages"=>{"methods"=>["POST", "GET"], "filters"=>{"from"=>"447977271009"}}})
-      expect(@decoded_token['sub']).to eql('ExampleApp')
+      expect(@decoded_token.first['paths']).to be_nil
+      expect(@decoded_token.first['acl']).to eql("paths"=>{"/messages"=>{"methods"=>["POST", "GET"], "filters"=>{"from"=>"447977271009"}}})
+      expect(@decoded_token.first['sub']).to eql('ExampleApp')
     end
 
-    it 'generates a JWT with proper formation' do
-      expect(@decoded_token).to match(
+    it 'generates a JWT payload with proper formation' do
+      expect(@decoded_token.first).to match(
         hash_including(
           {
             "sub"=>"ExampleApp",
@@ -100,7 +111,7 @@ describe Vonage::JWTBuilder do
     end
 
     it 'generates a JWT without path key' do
-      expect(@decoded_token.keys).not_to include("paths")
+      expect(@decoded_token.first.keys).not_to include("paths")
     end
   end
 
