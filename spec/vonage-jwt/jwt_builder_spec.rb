@@ -103,7 +103,6 @@ describe Vonage::JWTBuilder do
           {
             "sub"=>"ExampleApp",
             "application_id"=>"123456789",
-            "typ"=>"JWT",
             "acl"=> { "paths" => { "/messages" => { "methods" => ["POST", "GET"], "filters"=> {"from" => "447977271009" } } } }
           }
         )
