@@ -13,7 +13,7 @@ module Vonage
     end
 
     def generate
-      ::JWT.encode(to_payload, generator.private_key, generator.alg)
+      ::JWT.encode(to_payload, generator.private_key, generator.alg, header_fields={typ: typ})
     end
 
     def to_payload
@@ -22,8 +22,7 @@ module Vonage
         jti: generator.jti,
         exp: generator.exp || iat + generator.ttl,
         sub: generator.subject,
-        application_id: generator.application_id,
-        typ: typ
+        application_id: generator.application_id
       }
       hash.merge!(generator.paths) if generator.paths
       hash.merge!(nbf: generator.nbf) if generator.nbf
