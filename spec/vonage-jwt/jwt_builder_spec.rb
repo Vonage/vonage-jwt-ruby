@@ -251,7 +251,13 @@ describe Vonage::JWTBuilder do
     end
 
     it 'does not mutate the original params hash' do
-      expect(@decoded_token.first).to match(hash_including(@claims))
+      expect(@claims).to match(hash_including(
+        application_id: '123456789',
+        private_key: './spec/vonage-jwt/private_key.txt',
+        subject: 'ExampleApp',
+        foo: 'bar',
+        baz: 'qux'
+      ))
     end
   end
 end
