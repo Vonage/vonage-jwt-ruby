@@ -229,13 +229,14 @@ describe Vonage::JWTBuilder do
 
   context 'with additional private claims' do
     before :each do
-      @builder = Vonage::JWTBuilder.new(
+      @claims = {
         application_id: '123456789',
         private_key: './spec/vonage-jwt/private_key.txt',
         subject: 'ExampleApp',
         foo: 'bar',
         baz: 'qux'
-      )
+      }
+      @builder = Vonage::JWTBuilder.new(@claims)
       token = @builder.jwt.generate
       @decoded_token = JWT.decode(token, nil, nil, { algorithm: 'RS256' })
     end
@@ -247,6 +248,10 @@ describe Vonage::JWTBuilder do
     it 'generates a JWT string with the data provided' do
       expect(@decoded_token.first['foo']).to eql('bar')
       expect(@decoded_token.first['baz']).to eql('qux')
+    end
+
+    it 'does not mutate the original params hash' do
+      expect(@decoded_token.first).to match(hash_including(@claims))
     end
   end
 end
