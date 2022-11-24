@@ -91,7 +91,7 @@ module Vonage
     end
 
     def set_additional_claims(params)
-      params.delete_if {|k,v| [:application_id, :private_key, :jti, :nbf, :ttl, :exp, :alg, :paths, :subject].include?(k) }
+      params.dup.delete_if {|k,v| [:application_id, :private_key, :jti, :nbf, :ttl, :exp, :alg, :paths, :subject].include?(k) }
     end
 
     def set_exp
