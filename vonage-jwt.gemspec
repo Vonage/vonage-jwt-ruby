@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = 'Vonage JWT Generator for Ruby'
   s.summary = 'This is the Ruby client library to generate Vonage JSON Web Tokens (JWTs).'
   s.files = Dir.glob('lib/**/*.rb') + %w[LICENSE.txt README.md vonage-jwt.gemspec]
-  s.required_ruby_version = '>= 2.7.0'
+  s.required_ruby_version = '>= 2.5.0'
   s.add_dependency('jwt', '~> 2')
   s.require_path = 'lib'
   s.metadata = {
