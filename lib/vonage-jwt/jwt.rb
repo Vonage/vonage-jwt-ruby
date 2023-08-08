@@ -21,10 +21,10 @@ module Vonage
         iat: iat,
         jti: generator.jti,
         exp: generator.exp || iat + generator.ttl,
-        sub: generator.subject,
         application_id: generator.application_id
       }
       hash.merge!(generator.paths) if generator.paths
+      hash.merge!(sub: generator.subject) if generator.subject
       hash.merge!(nbf: generator.nbf) if generator.nbf
       hash.merge!(generator.additional_claims) if !generator.additional_claims.empty?
       hash

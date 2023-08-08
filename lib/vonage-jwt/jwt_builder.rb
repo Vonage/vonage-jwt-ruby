@@ -54,7 +54,7 @@ module Vonage
       @exp = params.fetch(:exp, nil)
       @alg = params.fetch(:alg, 'RS256')
       @paths = params.fetch(:paths, nil)
-      @subject = params.fetch(:subject, 'Subject')
+      @subject = params.fetch(:subject, nil)
       @additional_claims = set_additional_claims(params)
       @jwt = Vonage::JWT.new(generator: self)
 
