@@ -1,3 +1,7 @@
+# 0.2.0
+
+-  Adds `decode` and `verify_signature` methods to the `JWT` class. See [#5](https://github.com/Vonage/vonage-jwt-ruby/pull/5)
+
 # 0.1.3
 
 -  Removing default sub field and value from payload. See [#3](https://github.com/Vonage/vonage-jwt-ruby/pull/3)

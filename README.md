@@ -27,9 +27,11 @@ Alternatively you can clone the repository:
 
 ## Usage
 
+### Generating a JWT
+
 By default the Vonage JWT generator creates a short lived JWT (15 minutes) per request.
 To generate a long lived JWT for multiple requests, specify a longer value in the `exp`
-parameter during initialization. 
+parameter during initialization.
 
 Example with no custom configuration:
 
@@ -51,16 +53,38 @@ Example providing custom configuration options:
         "/messages": {
           "methods": ["POST", "GET"],
           "filters": {
-            "from": "447977271009"  
-          }     
-        }  
-      }   
+            "from": "447977271009"
+          }
+        }
+      }
     }
   },
   subject: 'My_Custom_Subject'
 )
 @token = @builder.jwt.generate
 ```
+
+### Decoding a JWT
+
+You can decode a JWT like so:
+
+```ruby
+Vonage::JWT.decode(token, nil, false)
+```
+
+where `token` is the JWT that you want to decode. The `Vonage::JWT::decode` method is essentially just a wrapper around the `ruby-jwt` library method of the same name, and usage is identical to what is [documented for that library](https://github.com/jwt/ruby-jwt#algorithms-and-usage).
+
+### Verifying a Signature
+
+For JWTs that are signed, you can verify a JWT signature like so:
+
+```ruby
+Vonage::JWT.verify_signature(token, signature_secret, algorithm)
+```
+
+where `token` is the signed JWT, `signature_secret` is the secret or key required by whichever algorithm was used to sign the JWT, and `algorithm` is a string indicating the algorithm that was used to sign the JWT (e.g. `'HS256'`, `'RS256'`, etc)
+
+The method will return `true` if the signature is verified and `false` if it is not.
 
 ## Documentation
 

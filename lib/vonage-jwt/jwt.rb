@@ -29,5 +29,18 @@ module Vonage
       hash.merge!(generator.additional_claims) if !generator.additional_claims.empty?
       hash
     end
+
+    def self.decode(token, secret = nil, verify = true, opts = {}, &block)
+      ::JWT.decode(token, secret, verify, opts, &block)
+    end
+
+    def self.verify_signature(token, signature_secret, algorithm)
+      begin
+        decode(token, signature_secret, true, {algorithm: algorithm})
+        return true
+      rescue ::JWT::VerificationError
+        return false
+      end
+    end
   end
 end
