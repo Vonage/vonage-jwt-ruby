@@ -1,3 +1,7 @@
+# 0.2.1
+
+-  Updates the `gemspec` for the `ruby-jwt` dependency. See [#14](https://github.com/Vonage/vonage-jwt-ruby/pull/14)
+
 # 0.2.0
 
 -  Adds `decode` and `verify_signature` methods to the `JWT` class. See [#5](https://github.com/Vonage/vonage-jwt-ruby/pull/5)
