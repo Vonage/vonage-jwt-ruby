@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.summary = 'This is the Ruby client library to generate Vonage JSON Web Tokens (JWTs).'
   s.files = Dir.glob('lib/**/*.rb') + %w[LICENSE.txt README.md vonage-jwt.gemspec]
   s.required_ruby_version = '>= 2.5.0'
-  s.add_dependency('jwt', '~> 2')
+  s.add_dependency('jwt', '>= 2.0', '< 4.0')
   s.require_path = 'lib'
   s.metadata = {
     'homepage' => 'https://github.com/Vonage/vonage-jwt-ruby',
